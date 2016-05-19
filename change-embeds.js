@@ -2,8 +2,8 @@ var ChangeEmbeds = function() {
   return {
     insertIframesInDivs: function() {
       var divs = document.getElementsByClassName('change-embed-petition'),
-        i;
-      for (i = 0; i < divs.length; i ++) {
+        i, len;
+      for (i = 0, len = divs.length; i < len; i ++) {
         ChangeEmbeds.insertIframeIntoDiv(divs[i]);
       }
     },
