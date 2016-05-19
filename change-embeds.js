@@ -1,29 +1,22 @@
-  function setupChangeEmbeds(minWidth, midWidth, maxWidth, minHeight, midHeight, maxHeight) {
-    setChangeEmbedSizes(minWidth, midWidth, maxWidth, minHeight, midHeight, maxHeight);
-    window.onresize = function() {
-      setChangeEmbedSizes(minWidth, midWidth, maxWidth, minHeight, midHeight, maxHeight);
-    };
-  }
-
-  function setChangeEmbedSizes(minWidth, midWidth, maxWidth, minHeight, midHeight, maxHeight) {
-    var divs = document.getElementsByClassName('iframe-container-class');
-    for (var i = 0, len = divs.length; i < len; i++) {
-      var div = divs[i],
-        iframe = div.getElementsByClassName('iframe-class')[0],
-        divWidth = div.offsetWidth,
-        newHeight;
-      if (divWidth <= midWidth) {
-        newHeight = minHeight;
-        newWidth = minWidth;
-      } else if (divWidth < maxWidth) {
-        newHeight = midHeight;
-        newWidth = midWidth;
-      } else {
-        newHeight = maxHeight;
-        newWidth = maxWidth;
+var ChangeEmbeds = function() {
+  return {
+    insertIframesInDivs: function() {
+      var divs = document.getElementsByClassName('change-embed-petition'),
+        i;
+      for (i = 0; i < divs.length; i ++) {
+        ChangeEmbeds.insertIframeIntoDiv(divs[i]);
       }
-      div.style.height = newHeight.toString().concat('px');
-      iframe.style.height = newHeight.toString().concat('px');
-      iframe.style.width = newWidth.toString().concat('px');
+    },
+
+    insertIframeIntoDiv: function(div) {
+      var petitionId = div.getAttribute('data-petition-id');
+      //Make sure the div hasn't already received its iframe
+      if (div.getAttribute('data-iframe-loaded') === 'true') { return; }
+      div.innerHTML = "<iframe height='530px' width='300px' src='https://www.change.org/embed/p/" +
+        petitionId + "/preview' frameborder='0'></iframe>";
+      div.setAttribute('data-iframe-loaded', 'true');
     }
   }
+}();
+
+document.addEventListener("DOMContentLoaded", ChangeEmbeds.insertIframesInDivs);
